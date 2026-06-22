@@ -22,7 +22,7 @@ export default {
           src="../assets/images/icones/lista-vazia.svg"
           alt="Ícone de pesquisa"
         />
-        Sua lista está vazia. selecione itens para iniciar.
+        Sua lista está vazia. selecione itens para iniciar
       </p>
     </section>
   </main>

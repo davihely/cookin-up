@@ -11,10 +11,14 @@ export default {
   methods: {
     toggleSelecionado: function () {
       this.selecionado = !this.selecionado;
-      this.$emit("adicionarIngrediente", this.ingrediente);
+      if (this.selecionado) {
+        this.$emit("adicionarIngrediente", this.ingrediente);
+      } else {
+        this.$emit("removerIngrediente", this.ingrediente);
+      }
     },
   },
-  emits: ["adicionarIngrediente"],
+  emits: ["adicionarIngrediente", "removerIngrediente"],
 };
 </script>
 <template>

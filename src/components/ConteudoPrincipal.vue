@@ -1,36 +1,43 @@
-<script lang="ts">
+<script setup lang="ts">
+import { ref } from "vue";
 import SelecionarIngredientes from "./SelecionarIngredientes.vue";
 import SuaLista from "./SuaLista.vue";
+import MostrarReceitas from "./MostrarReceitas.vue";
 
-const ingredientes = [] as string[];
-export default {
-  data() {
-    return {
-      ingredientes,
-    };
-  },
-  components: {
-    SelecionarIngredientes,
-    SuaLista,
-  },
-  methods: {
-    adicionarIngrediente: function (ingrediente: string) {
-      if (!this.ingredientes.includes(ingrediente)) {
-        this.ingredientes.push(ingrediente);
-      } else {
-        const index = this.ingredientes.indexOf(ingrediente);
-        this.ingredientes.splice(index, 1);
-      }
-    },
-  },
-};
+type Pagina = "SelecionarIngredientes" | "MostrarReceitas";
+
+const ingredientes = ref<string[]>([]);
+const conteudo = ref<Pagina>("SelecionarIngredientes");
+
+function adicionarIngrediente(ingrediente: string) {
+  ingredientes.value.push(ingrediente);
+}
+function removerIngrediente(ingrediente: string) {
+  ingredientes.value = ingredientes.value.filter(
+    (iLista) => ingrediente !== iLista,
+  );
+}
+function navegar(pagina: Pagina) {
+  conteudo.value = pagina;
+}
 </script>
 <template>
   <main class="conteudo-principal">
     <SuaLista :ingredientes="ingredientes" />
-    <SelecionarIngredientes
-      @adicionar-ingrediente="adicionarIngrediente($event)"
-    />
+    <KeepAlive>
+      <SelecionarIngredientes
+        v-if="conteudo === 'SelecionarIngredientes'"
+        @adicionar-ingrediente="adicionarIngrediente($event)"
+        @remover-ingrediente="removerIngrediente($event)"
+        @buscar-receitas="navegar('MostrarReceitas')"
+      />
+      <Suspense v-else-if="conteudo === 'MostrarReceitas'">
+        <MostrarReceitas
+          :ingredientes="ingredientes"
+          @buscar-ingredientes="navegar('SelecionarIngredientes')"
+        />
+      </Suspense>
+    </KeepAlive>
   </main>
 </template>
 <style scoped>

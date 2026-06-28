@@ -10,7 +10,7 @@ export default {
   components: {
     IngredienteSelecionavel,
   },
-  emits: ["adicionarIngrediente"],
+  emits: ["adicionarIngrediente", "removerIngrediente", "trocarPagina"],
 };
 </script>
 
@@ -29,6 +29,8 @@ export default {
           <IngredienteSelecionavel
             :ingrediente="ingrediente"
             @adicionar-ingrediente="$emit('adicionarIngrediente', $event)"
+            @remover-ingrediente="$emit('removerIngrediente', $event)"
+            @trocar-pagina="$emit('trocarPagina', $event)"
           />
         </li>
       </ul>
